@@ -221,18 +221,7 @@
 .d-reward-grid .orange{background:#fbf0eb;border-color:#e7c8b7;color:#8b4528}
 .d-equation{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;line-height:1.8;text-align:center;padding:14px;border-radius:7px;background:#f0edfc;color:#423780;margin:14px 0;overflow-wrap:anywhere}
 .d-equation.d-loss{font-size:13px;background:#f4f6f8;color:#354352}
-.figure-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 0;font-size:12px;color:var(--muted)}
-.figure-expand,.figure-close{font-family:inherit;font-size:12px;line-height:1.5;color:var(--accent);border:1px solid #d6e1e9;border-radius:6px;background:#fff;padding:7px 11px;cursor:pointer}
-.figure-expand:hover,.figure-close:hover{background:var(--accent-soft)}
-.figure-expand:focus-visible,.figure-close:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.figure-tools>a{color:#657588;text-decoration:underline;text-underline-offset:3px}
 .post .diagram-figure figcaption{width:100%;margin-top:12px}
-.figure-dialog{width:min(1080px,calc(100vw - 40px));max-width:none;max-height:90vh;padding:0;border:1px solid #d4dfe8;border-radius:14px;background:var(--bg);box-shadow:0 20px 80px rgba(20,34,48,.3);overflow:auto;color:var(--text)}
-.figure-dialog::backdrop{background:rgba(22,32,44,.6)}
-.figure-dialog-toolbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:13px 20px;background:var(--bg);border-bottom:1px solid var(--line);font-size:13px;font-weight:600}
-.figure-dialog-body{padding:20px}
-.figure-dialog-open{overflow:hidden}
-.figure-dialog .diagram{--blog-rule:#dce3e9}
 .art-diagram{padding:20px 16px}
 .art-diagram-row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#4c6b7f}
 .art-diagram-row>span:nth-child(odd){padding:8px;background:#f0f5f8;border-radius:5px}
@@ -252,11 +241,6 @@
  .d-token-flow{flex-direction:column;align-items:stretch;gap:6px}
  .d-token-flow>div{flex:auto}
  .d-token-flow .d-chips{margin-bottom:0}
- .figure-tools{font-size:11px}
- .figure-dialog{width:calc(100vw - 16px);max-height:94vh;border-radius:10px}
- .figure-dialog-toolbar{padding:10px 14px}
- .figure-dialog-body{padding:10px}
- .figure-dialog .diagram{padding:16px}
  .post .diagram-figure figcaption{padding:0}
  .art-diagram{padding:12px}
  .art-diagram-row{gap:3px;font-size:9px}
@@ -264,4 +248,4 @@
  .art-diagram-methods{gap:7px;margin-top:10px;padding-top:8px;font-size:9px}
  .art-diagram-methods strong{font-size:12px}
 }
-@media print{.figure-tools,.figure-dialog{display:none}.diagram{break-inside:avoid}}
+@media print{.diagram{break-inside:avoid}}
