@@ -12,7 +12,8 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
 </head>
-<body>
+<body class="blog-page" id="top">
+<a class="skip-link" href="#content">Skip to content</a>
 <header class="topbar">
   <div class="shell nav">
     <a class="brand" href="../../">Zhen Qin <span class="brand-zoe">(Zoe)</span></a>
@@ -21,20 +22,45 @@
       <a href="../../#news">News</a>
       <a href="../../#publications">Publications</a>
       <a href="../../#opensource">Open Source</a>
-      <a href="../">Blog</a>
+      <a href="../" aria-current="page">Blog</a>
     </div>
   </div>
 </header>
 
-<main class="post">
+<main class="post" id="content">
+  <header class="post-header">
+    <a class="back-link" href="../"><span aria-hidden="true">←</span> All posts</a>
   <div class="post-kicker">Paper notes</div>
   <h1>Reading T²PO: Taming Hesitation in Multi-Turn Agentic RL</h1>
   <p class="post-meta">Zhen Qin · November 2026 · ~15 min read · Paper: <a href="https://arxiv.org/abs/2605.02178" target="_blank" rel="noopener">Wang et al., ICML 2026 (Spotlight)</a></p>
+
+  </header>
 
   <div class="tldr">
     <strong>TL;DR</strong>
     <p>Reinforcement learning for multi-turn LLM agents often collapses partway through training. T²PO argues the cause is <em>hesitation</em>: the agent overthinks within a turn and repeats itself across turns, and these low-information rollouts make gradients noisy. It reads a cheap uncertainty signal from the model's own token distributions and uses it during rollout generation to (1) cut the thinking short once that signal stops changing and (2) resample a turn that looks like a repeat of the previous one. The policy update itself is unchanged from GiGPO.</p>
   </div>
+
+
+  <details class="post-toc">
+    <summary><span>On this page</span><span class="toc-hint">12 sections</span></summary>
+    <nav aria-label="Table of contents">
+      <ol>
+        <li><a href="#training">How an LLM agent is trained</a></li>
+        <li><a href="#rollouts">Rollouts: the data RL learns from</a></li>
+        <li><a href="#multiturn">Multi-turn: when one attempt takes many steps</a></li>
+        <li><a href="#example">The intuition, in one example</a></li>
+        <li><a href="#diagnosis">The diagnosis: training collapse comes from hesitation</a></li>
+        <li><a href="#signal">A cheap uncertainty signal from the model itself</a></li>
+        <li><a href="#tti">Token level: stop thinking once the signal flattens (TTI)</a></li>
+        <li><a href="#tds">Turn level: resample a turn that repeats the last one (TDS)</a></li>
+        <li><a href="#update">The policy update is GiGPO, unchanged</a></li>
+        <li><a href="#results">What the experiments show</a></li>
+        <li><a href="#context">Where it sits among related work</a></li>
+        <li><a href="#takeaways">Takeaways</a></li>
+      </ol>
+    </nav>
+  </details>
 
   <p>I recently presented this paper at a reading group. These are my notes, written for someone who knows some ML but has not worked on LLM agents. The first three sections build up the background in order: how an LLM agent is trained, what a rollout is, and what changes when a task takes many turns. If you know all three, skip to <a href="#example">the example</a>.</p>
 
@@ -45,7 +71,7 @@
   <p>Those weights are shaped in stages (Figure 1). Pretraining on large text corpora teaches language and world knowledge. General post-training by the model developer (supervised fine-tuning and RL) turns the base model into an assistant that follows instructions and reasons inside <code>&lt;think&gt;</code>. Qwen3-4B and Qwen3-8B, where this paper starts, are at that point. The paper then adds task-specific post-training: a short warm-up called RFT, followed by RL on the agent task. When training ends, θ is frozen and the model is deployed as the agent.</p>
 
   <figure>
-    <a href="fig1-pipeline.png" target="_blank" rel="noopener"><img src="fig1-pipeline.png" alt="Four stages: pretraining, general post-training, task post-training with RFT and RL, and use as an agent in an observe-act loop." loading="lazy"></a>
+    <a href="fig1-pipeline.png" target="_blank" rel="noopener"><img src="fig1-pipeline.png" width="1600" height="784" alt="Four stages: pretraining, general post-training, task post-training with RFT and RL, and use as an agent in an observe-act loop." loading="lazy"></a>
     <figcaption>Figure 1. From pretraining to an agent. T²PO is a method for the last training stage, RL on the agent task. Every stage updates the same weights θ.</figcaption>
   </figure>
 
@@ -60,7 +86,7 @@
   <p>Rollouts also drive the warm-up. In <strong>rejection fine-tuning (RFT)</strong>, the model plays the environment, low-scoring rollouts are discarded, and the model is fine-tuned to imitate the rest. This teaches the action format, so that RL starts with enough successful rollouts to compare against. RFT keeps only the good attempts; RL learns from the contrast between good and bad ones.</p>
 
   <figure>
-    <a href="fig3-rl-loop.png" target="_blank" rel="noopener"><img src="fig3-rl-loop.png" alt="RL loop: current model, eight rollouts of one task with rewards, score and compare, update, repeat." loading="lazy"></a>
+    <a href="fig3-rl-loop.png" target="_blank" rel="noopener"><img src="fig3-rl-loop.png" width="1600" height="712" alt="RL loop: current model, eight rollouts of one task with rewards, score and compare, update, repeat." loading="lazy"></a>
     <figcaption>Figure 2. One RL step: generate a group of rollouts with the current model, score and compare them, update θ, repeat. T²PO changes only the second box, how the rollouts are generated.</figcaption>
   </figure>
 
@@ -69,7 +95,7 @@
   <p>In a single-turn task such as a math problem, a rollout is one response, and it is scored right away. Agent tasks are multi-turn. A <strong>turn</strong> is one "see the state, write a response" step, and a rollout is a sequence of turns. In WebShop, the main benchmark of the paper, the state is a shopping page rendered as text, together with the task and a short memory of the last two turns. The model must search, browse, pick a product, choose options and buy, within 15 turns. Each response has a fixed format: reasoning inside <code>&lt;think&gt;…&lt;/think&gt;</code>, then exactly one command inside <code>&lt;action&gt;…&lt;/action&gt;</code>, such as <code>search[brown men shirt]</code> or <code>click[next &gt;]</code>.</p>
 
   <figure>
-    <a href="fig2-rollout.png" target="_blank" rel="noopener"><img src="fig2-rollout.png" alt="A rollout made of turns: each turn maps a state to an output, the website executes it, and a single reward arrives at the end." loading="lazy"></a>
+    <a href="fig2-rollout.png" target="_blank" rel="noopener"><img src="fig2-rollout.png" width="1600" height="717" alt="A rollout made of turns: each turn maps a state to an output, the website executes it, and a single reward arrives at the end." loading="lazy"></a>
     <figcaption>Figure 3. In a multi-turn task, one rollout is a sequence of turns with a single reward at the end. T²PO acts in two places: inside a single output (TTI) and between consecutive outputs (TDS).</figcaption>
   </figure>
 
@@ -80,7 +106,7 @@
   <p>The idea behind T²PO fits in one sentence: <strong>when the agent stops gaining new information, stop and move on.</strong> Figure 4 shows it on one task, <em>buy a brown men's shirt under $40</em>, where the first results page has nothing that fits.</p>
 
   <figure>
-    <a href="fig0-intuition.png" target="_blank" rel="noopener"><img src="fig0-intuition.png" alt="Left: reasoning within one turn, where the first three lines add information and the rest repeat it; TTI stops after the decision. Right: turns where the agent repeats the same search; TDS discards the repeat and regenerates a new search." loading="lazy"></a>
+    <a href="fig0-intuition.png" target="_blank" rel="noopener"><img src="fig0-intuition.png" width="1600" height="805" alt="Left: reasoning within one turn, where the first three lines add information and the rest repeat it; TTI stops after the decision. Right: turns where the agent repeats the same search; TDS discards the repeat and regenerates a new search." loading="lazy"></a>
     <figcaption>Figure 4. Two places where information stops growing. Left: inside one turn, the model keeps restating facts after it has decided; TTI cuts the thinking there. Right: across turns, the agent repeats a search it has already done; TDS throws that turn away and has the model try again. Wording is illustrative, adapted from the paper's appendix.</figcaption>
   </figure>
 
@@ -122,12 +148,12 @@
   <p>The stop itself is a small piece of decoding surgery. At the next step, the logit of <code>&lt;/think&gt;</code> is set to \(+\infty\) and every other logit to \(-\infty\), so the model emits <code>&lt;/think&gt;</code> with probability 1. A fixed sequence <code>&lt;/think&gt;</code>, <code>\n</code>, <code>&lt;action&gt;</code> is then appended without sampling, and normal sampling resumes so the model writes the action itself. The intervention fires at most once per response.</p>
 
   <figure>
-    <a href="fig4-tti-logits.png" target="_blank" rel="noopener"><img src="fig4-tti-logits.png" alt="Three panels: normal decoding where the end-of-thinking token has 7% probability; TTI sets its logit to infinity; three tokens are inserted and the model then writes the action." loading="lazy"></a>
+    <a href="fig4-tti-logits.png" target="_blank" rel="noopener"><img src="fig4-tti-logits.png" width="1600" height="722" alt="Three panels: normal decoding where the end-of-thinking token has 7% probability; TTI sets its logit to infinity; three tokens are inserted and the model then writes the action." loading="lazy"></a>
     <figcaption>Figure 5. How TTI stops thinking, on a toy five-token vocabulary. Overwriting the logits makes the stop deterministic; inserting <code>&lt;action&gt;</code> guarantees the output can be parsed.</figcaption>
   </figure>
 
   <figure>
-    <a href="fig5-tti-example.png" target="_blank" rel="noopener"><img src="fig5-tti-example.png" alt="Side-by-side WebShop example: without TTI the reasoning is truncated at 500 tokens with no action; with TTI the thinking stops at 'Then' and the model outputs click[next &gt;]." loading="lazy"></a>
+    <a href="fig5-tti-example.png" target="_blank" rel="noopener"><img src="fig5-tti-example.png" width="1600" height="718" alt="Side-by-side WebShop example: without TTI the reasoning is truncated at 500 tokens with no action; with TTI the thinking stops at 'Then' and the model outputs click[next &gt;]." loading="lazy"></a>
     <figcaption>Figure 6. The same decision with and without TTI. The left text follows the paper's Appendix G failure case; the right side is my illustration of where the rule would cut.</figcaption>
   </figure>
 
@@ -153,7 +179,7 @@
   <p>The combined advantage goes into a standard PPO-style clipped objective with a KL penalty to the frozen RFT model. A few supporting choices matter in practice: only the last two turns are kept in the prompt as memory, malformed outputs get a 0.1 format penalty, and the RFT warm-up described above.</p>
 
   <figure>
-    <a href="fig6-policy-update.png" target="_blank" rel="noopener"><img src="fig6-policy-update.png" alt="Three panels: trajectory-level advantage across eight rollouts, turn-level advantage at a shared anchor state, and their combination fed into the PPO-style objective." loading="lazy"></a>
+    <a href="fig6-policy-update.png" target="_blank" rel="noopener"><img src="fig6-policy-update.png" width="1600" height="702" alt="Three panels: trajectory-level advantage across eight rollouts, turn-level advantage at a shared anchor state, and their combination fed into the PPO-style objective." loading="lazy"></a>
     <figcaption>Figure 7. The two-level advantage with toy numbers. The left panel uses GRPO's mean/std normalization for illustration; the paper's WebShop configuration lists mean-only normalization, and \(\omega\) is not reported, so I set it to 1.</figcaption>
   </figure>
 
@@ -224,7 +250,7 @@
 </main>
 
 <footer class="shell footer">
-  <span>© 2026 Zhen Qin</span><span><a href="../">All posts</a></span>
+  <span>© 2026 Zhen Qin</span><span class="footer-links"><a href="../">All posts</a><a href="#top">Back to top ↑</a></span>
 </footer>
 </body>
 </html>
