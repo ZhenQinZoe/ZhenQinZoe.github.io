@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="blog.css">
 </head>
-<body>
+<body class="blog-page" id="top">
+<a class="skip-link" href="#content">Skip to content</a>
 <header class="topbar">
   <div class="shell nav">
     <a class="brand" href="../">Zhen Qin <span class="brand-zoe">(Zoe)</span></a>
@@ -17,22 +18,41 @@
       <a href="../#news">News</a>
       <a href="../#publications">Publications</a>
       <a href="../#opensource">Open Source</a>
-      <a href="./">Blog</a>
+      <a href="./" aria-current="page">Blog</a>
     </div>
   </div>
 </header>
 
-<main class="post">
-  <h1>Blog</h1>
-  <p class="post-meta">Notes on papers I read and things I build.</p>
+<main class="shell blog-index" id="content">
+  <header class="blog-heading">
+    <p class="eyebrow">Notes &amp; ideas</p>
+    <h1>Blog<span class="heading-dot" aria-hidden="true">.</span></h1>
+    <p class="blog-intro">Notes on papers I read and things I build.</p>
+  </header>
 
-  <div class="post-list">
-    <a class="post-card" href="t2po/">
-      <span class="date">Nov. 2026 · Paper notes</span>
-      <h2>Reading T²PO: Taming Hesitation in Multi-Turn Agentic RL</h2>
-      <p>Why RL for multi-turn LLM agents collapses, and how token- and turn-level uncertainty control during rollouts stabilizes it.</p>
-    </a>
-  </div>
+  <section class="writing-list" aria-labelledby="writing-heading">
+    <div class="section-heading">
+      <h2 id="writing-heading">Latest writing</h2>
+      <span>2026</span>
+    </div>
+    <article class="post-card">
+      <a class="post-card-link" href="t2po/" aria-labelledby="t2po-title">
+        <div class="post-card-copy">
+          <div class="card-meta"><span class="category">Paper notes</span><time datetime="2026-11">Nov. 2026</time></div>
+          <h2 id="t2po-title">Reading T²PO: Taming Hesitation in Multi-Turn Agentic RL</h2>
+          <p>Why RL for multi-turn LLM agents collapses, and how token- and turn-level uncertainty control during rollouts stabilizes it.</p>
+          <div class="card-bottom"><span class="read-link">Read article <span aria-hidden="true">↗</span></span><span>~15 min read</span></div>
+        </div>
+        <div class="post-card-art" aria-hidden="true">
+          <div class="art-heading"><span>Multi-turn agentic RL</span><span class="art-number">01</span></div>
+          <div class="art-title">T²PO</div>
+          <div class="art-subtitle">Taming hesitation</div>
+          <div class="art-figure"><img src="t2po/fig0-intuition.png" width="1600" height="805" alt="" decoding="async"></div>
+          <div class="art-caption">Token-level + turn-level control</div>
+        </div>
+      </a>
+    </article>
+  </section>
 </main>
 
 <footer class="shell footer">

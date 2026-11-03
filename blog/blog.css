@@ -1,38 +1,133 @@
-/* Blog styles — builds on ../style.css (same tokens, fonts and topbar) */
-.post{width:min(760px,calc(100% - 40px));margin:0 auto;padding:56px 0 24px}
-.post-kicker{color:var(--accent);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
-.post h1{font-size:clamp(32px,4.6vw,44px);line-height:1.15;letter-spacing:-.03em;margin:0 0 14px}
-.post-meta{color:var(--muted);font-size:14px;margin:0 0 32px}
-.post-meta a{font-weight:600}
-.tldr{background:var(--accent-soft);border:1px solid #d6e6ef;border-radius:16px;padding:20px 24px;margin:0 0 40px}
-.tldr strong{display:block;font-family:"Libre Franklin",sans-serif;color:var(--accent);margin-bottom:6px}
-.tldr p{margin:0;font-size:16px}
-.post h2{font-size:26px;line-height:1.3;letter-spacing:-.02em;margin:52px 0 14px}
-.post h3{font-size:19px;margin:32px 0 10px}
-.post p,.post li{font-size:17px}
-.post p{margin:0 0 18px}
-.post ul,.post ol{padding-left:22px;margin:0 0 18px}
-.post li{margin-bottom:8px}
-.post code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--tag);border-radius:6px;padding:1px 6px}
-.post blockquote{margin:0 0 18px;padding:2px 0 2px 18px;border-left:3px solid var(--line);color:#4a525e;border-radius:0}
-.post figure{margin:28px 0 32px;width:min(1000px,calc(100vw - 40px));position:relative;left:50%;transform:translateX(-50%)}
-.post figure img{width:100%;display:block;border:1px solid var(--line);border-radius:16px;background:#fff}
-.post figcaption{width:min(760px,100%);margin:10px auto 0;color:var(--muted);font-size:14px;line-height:1.55}
-.katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
-.post table{width:100%;border-collapse:collapse;margin:8px 0 22px;font-size:15px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.post th,.post td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
-.post th{font-family:"Libre Franklin",sans-serif;font-size:13px;color:var(--muted);font-weight:600}
+/* Blog-specific styles. The homepage continues to use style.css unchanged. */
+.blog-page{--reading:760px;--ink-soft:#505b6b;--blog-rule:#dce3e9}
+.blog-page a:focus-visible,.post-toc summary:focus-visible{outline:3px solid var(--accent);outline-offset:5px;border-radius:3px}
+.blog-page .navlinks a[aria-current="page"]{color:var(--accent);font-weight:600;box-shadow:0 2px 0 var(--accent);padding-bottom:5px}
+.skip-link{position:fixed;top:10px;left:20px;z-index:30;background:var(--paper);border:1px solid var(--accent);padding:8px 14px;transform:translateY(-180%)}
+.skip-link:focus{transform:translateY(0)}
+.eyebrow,.post-kicker{color:var(--accent);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.13em}
+.blog-index{padding:64px 0 76px;min-height:calc(100vh - 170px)}
+.blog-heading{margin-bottom:48px}
+.blog-heading .eyebrow{margin:0 0 10px}
+.blog-heading h1{font-size:clamp(44px,6vw,64px);line-height:1.1;letter-spacing:-.045em;margin:0 0 18px}
+.heading-dot{color:var(--accent)}
+.blog-intro{color:var(--ink-soft);font-size:18px;margin:0}
+.section-heading{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--blog-rule);padding:18px 0 20px}
+.section-heading h2{font-size:13px;font-weight:600;letter-spacing:.02em;margin:0}
+.section-heading>span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.post-card{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(31,41,55,.035);transition:border-color .2s,box-shadow .2s}
+.post-card:hover{border-color:#bdcdd8;box-shadow:0 16px 38px rgba(31,41,55,.07)}
+.post-card-link{display:grid;grid-template-columns:1.18fr 1fr;color:var(--text);height:100%}
+.post-card-link:hover{opacity:1}
+.post-card-link:focus-visible{outline-offset:-4px}
+.post-card-copy{padding:38px;display:flex;flex-direction:column;align-items:flex-start}
+.card-meta{display:flex;gap:14px;align-items:center;color:var(--muted);font-size:12px;margin-bottom:22px}
+.category{color:var(--accent);font-weight:600;background:var(--accent-soft);padding:4px 10px;border-radius:5px}
+.post-card h2{font-size:clamp(23px,2.6vw,29px);line-height:1.35;letter-spacing:-.025em;margin:0 0 18px}
+.post-card-copy>p{font-size:15px;line-height:1.8;color:var(--ink-soft);margin:0 0 30px}
+.card-bottom{display:flex;justify-content:space-between;align-items:center;gap:20px;width:100%;margin-top:auto;font-size:12px;color:var(--muted)}
+.read-link{color:var(--accent);font-size:14px;font-weight:600;display:inline-flex;gap:10px;align-items:center}
+.read-link>span{font-size:19px;transition:transform .2s}
+.post-card:hover .read-link>span{transform:translate(2px,-2px)}
+.post-card-art{background:#edf3f6;border-left:1px solid #e2ebf0;padding:28px 30px 22px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.art-heading{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#5b7687}
+.art-number{font-variant-numeric:tabular-nums;border:1px solid #cbd9e2;border-radius:50%;width:28px;height:28px;display:grid;place-items:center}
+.art-title{font-family:"Libre Franklin",sans-serif;font-size:72px;font-weight:600;letter-spacing:-.06em;line-height:1.05;color:#335c75;margin-top:24px}
+.art-subtitle{color:#5b7687;font-size:14px;margin:6px 0 22px}
+.art-figure{border:1px solid #d7e1e8;border-radius:8px;overflow:hidden;background:white;box-shadow:0 7px 18px rgba(41,68,87,.04)}
+.art-figure img{display:block;width:100%;height:auto}
+.art-caption{font-size:10px;letter-spacing:.035em;color:#657c8a;margin-top:12px}
+/* Long-form reading */
+.post{width:min(var(--reading),calc(100% - 48px));margin:0 auto;padding:44px 0 30px}
+.post-header{width:min(920px,calc(100vw - 48px));position:relative;left:50%;transform:translateX(-50%);padding-bottom:34px;margin-bottom:32px;border-bottom:1px solid var(--blog-rule)}
+.back-link{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);margin-bottom:34px}
+.back-link:hover{color:var(--accent);opacity:1}
+.post-kicker{margin-bottom:14px}
+.post h1{font-size:clamp(32px,4.3vw,48px);line-height:1.17;letter-spacing:-.035em;margin:0 0 24px;max-width:900px;text-wrap:balance}
+.post .post-meta{color:var(--muted);font-size:13px;line-height:1.8;margin:0;max-width:720px}
+.post-meta a{font-weight:500}
+.tldr{background:var(--accent-soft);border:1px solid #dbe7ef;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;padding:23px 26px;margin:0 0 24px}
+.tldr>strong{display:block;font-family:"Libre Franklin",sans-serif;color:var(--accent);font-size:12px;letter-spacing:.07em;margin-bottom:9px}
+.post .tldr p{margin:0;font-size:16px;line-height:1.85;color:#354b5b}
+.post-toc{border:1px solid var(--blog-rule);border-radius:12px;background:rgba(255,255,255,.55);margin:0 0 34px}
+.post-toc summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;padding:16px 20px;color:var(--text);font-size:14px;font-weight:600}
+.post-toc summary::-webkit-details-marker{display:none}
+.post-toc summary::after{content:"+";font-size:21px;font-weight:400;color:var(--accent);line-height:1}
+.post-toc[open] summary::after{content:"−"}
+.toc-hint{margin-left:auto;color:var(--muted);font-size:12px;font-weight:400}
+.post-toc nav{padding:0 24px 18px}
+.post .post-toc ol{columns:2;column-gap:44px;padding-left:22px;margin:0}
+.post .post-toc li{font-size:13px;line-height:1.55;padding:5px 0 5px 3px;margin:0;break-inside:avoid;color:var(--muted)}
+.post-toc a{color:var(--ink-soft)}
+.post-toc a:hover{color:var(--accent);opacity:1}
+.post h2{font-size:27px;line-height:1.35;letter-spacing:-.025em;margin:56px 0 20px;padding-top:28px;border-top:1px solid var(--blog-rule);scroll-margin-top:90px;text-wrap:balance}
+.post h3{font-size:19px;line-height:1.4;margin:34px 0 16px}
+.post p,.post li{font-size:17px;line-height:1.85}
+.post p{margin:0 0 20px}
+.post ul,.post ol{padding-left:24px;margin:0 0 22px}
+.post li{margin-bottom:9px;padding-left:3px}
+.post p>a,.post li>a{text-decoration:underline;text-decoration-color:#b7cbd8;text-underline-offset:3px;text-decoration-thickness:1px}
+.post .post-toc a{text-decoration:none}
+.post code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em;background:#eceff3;border:1px solid #e4e8ed;border-radius:5px;padding:1px 5px;overflow-wrap:anywhere}
+.post blockquote{margin:24px 0;padding:2px 0 2px 22px;border-left:3px solid #c1d3df;color:var(--ink-soft)}
+.post blockquote p:last-child{margin-bottom:0}
+.post figure{margin:32px 0 36px;width:min(1000px,calc(100vw - 48px));position:relative;left:50%;transform:translateX(-50%)}
+.post figure>a{display:block;border-radius:12px}
+.post figure>a:hover{opacity:1}
+.post figure img{width:100%;height:auto;display:block;border:1px solid var(--blog-rule);border-radius:12px;background:#fff;box-shadow:0 6px 20px rgba(31,41,55,.025)}
+.post figcaption{width:min(var(--reading),100%);margin:14px auto 0;color:var(--muted);font-size:13px;line-height:1.7}
+.post .katex{position:relative}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:12px 4px}
+.post table{width:100%;border-collapse:separate;border-spacing:0;margin:0;font-size:14px;line-height:1.6;background:var(--paper)}
+.table-wrap{overflow-x:auto;margin:24px 0 28px;border:1px solid var(--blog-rule);border-radius:10px}
+.post th,.post td{padding:13px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.post th{background:#f0f4f7;font-family:"Libre Franklin",sans-serif;font-size:12px;color:#5c6976;font-weight:600}
 .post tr:last-child td{border-bottom:0}
 .post td.num,.post th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .post tr.hl td{background:var(--accent-soft);font-weight:600}
-.table-wrap{overflow-x:auto}
-.note{color:var(--muted);font-size:14px}
-.refs li{font-size:15px}
-.post-end{border-top:1px solid var(--line);margin-top:48px;padding-top:20px;color:var(--muted);font-size:15px}
-.post-list{display:flex;flex-direction:column;gap:16px}
-.post-card{display:block;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:22px 24px;color:var(--text);box-shadow:0 8px 24px rgba(31,41,55,.035)}
-.post-card:hover{opacity:1;border-color:#cfd8e0}
-.post-card h2{margin:4px 0 8px;font-size:20px;line-height:1.35}
-.post-card p{margin:0;color:#5a6270;font-size:15px}
-.post-card .date{font-size:13px}
-@media(max-width:650px){.post{width:calc(100% - 28px);padding-top:36px}.post figure{width:calc(100vw - 28px)}.post h2{font-size:22px}.post p,.post li{font-size:16px}}
+.post .note{color:var(--muted);font-size:14px}
+.post .refs li{font-size:14px;line-height:1.8;margin-bottom:11px;overflow-wrap:anywhere}
+.post .post-end{border-top:1px solid var(--blog-rule);margin-top:46px;padding-top:22px;color:var(--muted);font-size:13px}
+.footer-links{display:flex;gap:24px}
+#top,#content{scroll-margin-top:100px}
+@media(max-width:850px){
+  .post-card-copy{padding:28px}
+  .post-card-art{padding:24px}
+  .art-title{font-size:60px}
+  .card-bottom{flex-wrap:wrap;gap:8px 20px}
+}
+@media(max-width:650px){
+  .blog-index{padding-top:36px;padding-bottom:42px;min-height:calc(100vh - 200px)}
+  .blog-heading{margin-bottom:32px}
+  .blog-intro{font-size:16px}
+  .post-card-link{grid-template-columns:1fr}
+  .post-card-copy{padding:26px 24px}
+  .post-card h2{font-size:25px}
+  .card-meta{margin-bottom:18px}
+  .post-card-copy>p{margin-bottom:22px}
+  .post-card-art{border-left:0;border-top:1px solid #e2ebf0;padding:22px 24px;display:grid;grid-template-columns:1fr 1.25fr;column-gap:20px;align-items:center}
+  .art-heading{grid-column:1/-1;margin-bottom:14px}
+  .art-title{font-size:48px;margin:0;align-self:end}
+  .art-subtitle{font-size:12px;margin:4px 0 0;align-self:start}
+  .art-figure{grid-column:2;grid-row:2/4}
+  .art-caption{grid-column:1/-1;margin-top:14px}
+  .post{width:calc(100% - 36px);padding-top:28px}
+  .post-header{width:100%;padding-bottom:24px;margin-bottom:24px}
+  .back-link{margin-bottom:26px}
+  .post h1{font-size:32px;line-height:1.2;text-wrap:initial;margin-bottom:20px}
+  .post .post-meta{font-size:12px}
+  .tldr{padding:19px 20px}
+  .post .tldr p{font-size:15px}
+  .post-toc nav{padding-right:20px;padding-left:20px}
+  .post .post-toc ol{columns:1}
+  .post h2{font-size:23px;margin-top:40px;padding-top:24px;scroll-margin-top:130px;text-wrap:initial}
+  .post h3{font-size:18px}
+  .post p,.post li{font-size:16px;line-height:1.85}
+  .post figure{width:calc(100vw - 28px);margin:26px 0 30px}
+  .post figure img{border-radius:8px}
+  .post figcaption{padding:0 4px;font-size:12px}
+  .post th,.post td{padding:11px 12px}
+  .post table{font-size:13px;min-width:500px}
+  .footer-links{gap:20px}
+  #top,#content{scroll-margin-top:130px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.post-card,.read-link>span{transition:none}}
