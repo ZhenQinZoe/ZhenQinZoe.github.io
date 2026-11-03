@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Zhen Qin — Ph.D. Candidate at The Ohio State University.">
   <title>Zhen Qin</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=home-blog-1">
 </head>
 <body>
 <header class="topbar">
@@ -14,12 +14,12 @@
     <div class="navlinks">
       <a href="#about">About</a>
       <a href="#news">News</a>
+      <a href="#blog">Blog</a>
       <a href="#publications">Publications</a>
       <a href="#opensource">Open Source</a>
       <a href="#experience">Experience</a>
       <a href="#service">Service</a>
       <a href="#education">Education</a>
-      <a href="blog/">Blog</a>
     </div>
   </div>
 </header>
@@ -70,6 +70,29 @@
       <div class="news-item"><span class="news-date">May 2026</span><span>Successfully passed the <strong>Ph.D. Candidacy Exam</strong>.</span></div>
       <div class="news-item"><span class="news-date">Jan. 2025</span><span>Our paper <a href="https://proceedings.iclr.cc/paper_files/paper/2025/file/707a2d58641b2192203b4bf4c532cfe1-Paper-Conference.pdf" target="_blank" rel="noopener"><strong>“DUET: Decentralized Bilevel Optimization without Lower-Level Strong Convexity”</strong></a> has been accepted to <strong>ICLR 2025</strong>.</span></div>
       <div class="news-item"><span class="news-date">Oct. 2024</span><span>Successfully passed the <strong>Ph.D. Qualifying Exam</strong>.</span></div>
+    </div>
+  </section>
+
+  <section id="blog" class="section home-writing" aria-labelledby="blog-heading">
+    <h2 class="label" id="blog-heading">Blog</h2>
+    <div class="body">
+      <div class="home-writing-overview">
+        <p>Notes on papers I read and things I build.</p>
+        <a class="home-all-posts" href="blog/">All posts <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="home-writing-list">
+        <article class="home-post">
+          <a class="home-post-link" href="blog/t2po/" aria-labelledby="home-t2po-title">
+            <div class="home-post-cover" aria-hidden="true"><span>T²PO</span><span>Paper notes</span></div>
+            <div class="home-post-copy">
+              <div class="home-post-meta"><time datetime="2026-11">Nov. 2026</time><span>LLM agents · Reinforcement learning</span></div>
+              <h3 id="home-t2po-title">Reading T²PO: Taming Hesitation in Multi-Turn Agentic RL</h3>
+              <p>Why RL for multi-turn LLM agents collapses, and how token- and turn-level uncertainty control during rollouts stabilizes it.</p>
+              <div class="home-post-bottom"><span class="home-read-link">Read article <span aria-hidden="true">→</span></span><span>~15 min read</span></div>
+            </div>
+          </a>
+        </article>
+      </div>
     </div>
   </section>
 
