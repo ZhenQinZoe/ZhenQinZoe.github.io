@@ -67,3 +67,4 @@
   .home-post h3{font-size:19px}
 }
 @media(prefers-reduced-motion:reduce){.home-post{transition:none}.home-writing{scroll-behavior:auto}}
+.paperlink+.paperlink{margin-left:16px}
